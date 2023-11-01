@@ -1,0 +1,56 @@
+6yh
+create database qlkho;
+use qlkho;
+create table phieuxuat(
+sopx char(4) primary key,
+ngayxuat date
+);
+create table vattu(
+mavtu char(4) primary key,
+tenvtu varchar(10)
+);
+create table chitietphieuxuat(
+sopx char(4),
+foreign key(sopx) references phieuxuat(sopx),
+mavtu char(4),
+foreign key(mavtu) references vattu(mavtu),
+primary key(sopx,mavtu),
+dgxuat float,
+slxuat int
+);
+create table phieunhap(
+sopn char(4) primary key,
+ngaynhap date
+);
+create table chitietphieunhap(
+mavtu char(4),
+foreign key(mavtu) references vattu(mavtu),
+sopn char(4),
+foreign key(sopn) references phieunhap(sopn),
+primary key(mavtu,sopn),
+dgnhap float,
+slnhap int
+);
+create table dondh(
+sodh char(4) primary key,
+ngaydh date
+);
+
+create table chitietdondathang(
+mavtu char(4),
+foreign key(mavtu) references vattu(mavtu),
+sodh char(4),
+foreign key(sodh) references dondh(sodh),
+primary key(mavtu,sodh)
+);
+create table nhacc(
+mancc char(4) primary key,
+tenncc varchar(20),
+chiachi varchar(50),
+sdt int
+);
+alter table dondh
+add column mancc char(4);
+alter table dondh
+add constraint foreign key (mancc) references nhacc(mancc);
+

@@ -1,0 +1,86 @@
+create database quanlybanhang;
+use quanlybanhang;
+create table khachhang(
+makh varchar(4) primary key,
+tenkh varchar(30) not null,
+diachi varchar(50),
+ngaysinh datetime,
+sodt varchar(15) unique
+);
+create table nhanvien(
+manv varchar(4) primary key,
+hoten varchar(30) not null,
+gioitinh bit not null,
+diachi varchar(50) not null,
+ngaysinh datetime not null,
+dienthoai varchar(15) ,
+email text not null not null,
+noisinh varchar(20) not null,
+ngayvaolam datetime ,
+manql varchar(4)
+);
+create table nhacungcap(
+mancc varchar(5) primary key,
+tenncc varchar(50) not null,
+diachi varchar(50) not null,
+dienthoai varchar(15) not null,
+email varchar(30) not null,
+website varchar(30) 
+);
+create table loaisp(
+maloaisp varchar(4) primary key,
+tenloaisp varchar(30) not null,
+ghichu varchar(100)not null
+);
+create table sanpham(
+masp varchar(4) primary key not null,
+maloaisp varchar(4) not null,
+tensp varchar(50) not null,
+donvitinh varchar(10) not null,
+ghichu varchar(100)
+);
+create table phieunhap(
+sopn varchar(5) primary key,
+manv varchar(4) not null,
+mancc varchar(5)not null,
+ngaynhap datetime default current_timestamp  not null,
+ghichu varchar(100)
+);
+create table ctphieunhap(
+masp varchar(4) not null,
+foreign key(masp) references sanpham(masp),
+sopn varchar (5) not null,
+foreign key(sopn) references phieunhap(sopn),
+primary key(masp,sopn),
+soluong smallint default(0) not null,
+gianhap real check(gianhap>=0) not null
+);
+create table phieuxuat(
+sopx varchar(5) primary key,
+manv varchar(4) not null,
+makh varchar(4) not null,
+ngayban datetime default current_timestamp  not null,
+ghichu text
+);
+create table ctphieuxuat(
+sopx varchar(5),
+foreign key(sopx) references phieuxuat(sopx),
+masp varchar(4),
+foreign key(masp) references sanpham(masp),
+primary key(sopx,masp),
+soluong smallint check(soluong>=0),
+giaban real check(giaban>=0)
+);
+alter table phieunhap
+add column mancc char(4);
+alter table phieunhap
+add constraint foreign key (mancc) references nhacungcap(mancc);
+alter table phieunhap
+add constraint foreign key(manv) references nhanvien(manv);
+alter table phieuxuat
+add constraint foreign key(manv) references nhanvien(manv);
+alter table phieuxuat
+add constraint foreign key(makh)references khachhang(makh);
+alter table sanpham
+add constraint foreign key(maloaisp) references loaisp(maloaisp);
+
